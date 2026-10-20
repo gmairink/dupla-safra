@@ -1,0 +1,8 @@
+streamlit>=1.46
+geopandas
+pyogrio
+numpy
+pandas
+plotly
+xarray
+netCDF4

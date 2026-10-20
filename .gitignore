@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.streamlit/secrets.toml
+.vscode/
+notebooks/
+results/
+data/*
+!data/processed/
+data/processed/*
+!data/processed/forecast/
+data/processed/forecast/*
+!data/processed/forecast/demise_forecast_1982-2026.nc
+shapefiles/*.qmd
