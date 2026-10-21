@@ -102,13 +102,6 @@ dupla-safra/
 └── requirements.txt
 ```
 
-## Repositório
-
-<a href="https://github.com/gmairink/dupla-safra">
-  <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="22" valign="middle">
-  gmairink/dupla-safra
-</a>
-
 ## Visualização online
 
 Acesse a aplicação publicada no Streamlit Community Cloud:
