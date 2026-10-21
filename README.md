@@ -105,3 +105,15 @@ dupla-safra/
 ## Repositório
 
 [github.com/gmairink/dupla-safra](https://github.com/gmairink/dupla-safra)
+
+## Visualização online
+
+Acesse a aplicação publicada no Streamlit Community Cloud:
+
+**[Abrir o visualizador: Previsão do fim da estação chuvosa](https://dupla-safra.streamlit.app/)**
+
+## Situação da publicação e uso acadêmico
+
+O artigo relacionado a este trabalho foi submetido ao *International Journal of Climatology* e encontra-se atualmente em processo de revisão por pares.
+
+Este trabalho também será utilizado como Trabalho de Conclusão de Curso (TCC) do autor, com defesa prevista para dezembro de 2026.
