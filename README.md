@@ -104,13 +104,16 @@ dupla-safra/
 
 ## Repositório
 
-[github.com/gmairink/dupla-safra](https://github.com/gmairink/dupla-safra)
+<a href="https://github.com/gmairink/dupla-safra">
+  <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" width="22" valign="middle">
+  gmairink/dupla-safra
+</a>
 
 ## Visualização online
 
 Acesse a aplicação publicada no Streamlit Community Cloud:
 
-**[Abrir o visualizador: Previsão do fim da estação chuvosa](https://dupla-safra.streamlit.app/)**
+**(https://dupla-safra.streamlit.app/)**
 
 ## Situação da publicação e uso acadêmico
 
