@@ -778,8 +778,9 @@ def configure_map(fig, title):
         font=dict(family="Arial, sans-serif", size=12, color="#222222"),
         # Keep enough top space for the title while reducing the vertical gap
         # between the title and the map by letting the map fill more of the figure.
-        height=430,
-        margin=dict(l=32, r=23, t=38, b=6),
+        # Aumenta a área útil do mapa e reduz margens laterais/superiores.
+        height=500,
+        margin=dict(l=8, r=8, t=30, b=0),
         plot_bgcolor="#FFFFFF",
         paper_bgcolor="#FFFFFF",
         clickmode="event+select",
@@ -854,7 +855,7 @@ def render_demise_legend():
         )
 
     html = (
-        '<div style="width:100%; padding:0 8px 4px 8px; box-sizing:border-box; '
+        '<div style="width:82%; margin:0 auto; padding:0 2px 4px 2px; box-sizing:border-box; '
         'background:transparent; color:var(--text-color, inherit);">'
         '<div style="display:flex; width:100%; height:14px; border:0; box-sizing:border-box;">'
         + "".join(segments)
@@ -897,7 +898,7 @@ def render_error_legend():
         )
 
     html = (
-        '<div style="width:100%; padding:0 8px 4px 8px; box-sizing:border-box; '
+        '<div style="width:82%; margin:0 auto; padding:0 2px 4px 2px; box-sizing:border-box; '
         'background:transparent; color:var(--text-color, inherit);">'
         f'<div style="width:100%; height:14px; background:{gradient}; border:0; box-sizing:border-box;"></div>'
         '<div style="position:relative; width:100%; height:25px;">'
