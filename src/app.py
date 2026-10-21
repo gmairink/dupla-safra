@@ -1462,4 +1462,4 @@ if st.session_state.selected_lat is not None and st.session_state.selected_lon i
         st.metric("Erro", error_text)
 else:
 
-    st.info("Clique em uma célula da grade em qualquer um dos mapas para selecioná-la.")
+    st.info("Clique em uma célula da grade em qualquer um dos mapas para ver maiores detalhes.")
