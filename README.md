@@ -1,7 +1,7 @@
 # Previsibilidade do fim da estação chuvosa
 
 Aplicação interativa em **Streamlit** para visualizar a previsão do fim
-da estação chuvosa para a região de Monção Sul-Amerianala, compará-la com a data observada e examinar o erro
+da estação chuvosa para a região de Monção Sul-Americana, compará-la com a data observada e examinar o erro
 espacialmente.
 
 ## Funcionalidades
