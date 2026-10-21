@@ -1,7 +1,7 @@
-# Previsão do fim da estação chuvosa
+# Previsibilidade do fim da estação chuvosa
 
 Aplicação interativa em **Streamlit** para visualizar a previsão do fim
-da estação chuvosa, compará-la com a data observada e examinar o erro
+da estação chuvosa para a região de Monção Sul-Amerianala, compará-la com a data observada e examinar o erro
 espacialmente.
 
 ## Funcionalidades
@@ -11,8 +11,6 @@ espacialmente.
 -   Mapas de **Previsto**, **Observado** e **Erro**.
 -   Seleção de uma célula da grade em qualquer mapa para consultar os
     valores previstos, observados e o erro.
--   Legendas para a data de fim da estação chuvosa e para o erro da
-    previsão.
 
 ## Dados utilizados
 
@@ -89,44 +87,7 @@ Requisitos: Python e `pip`.
 O Streamlit mostrará no terminal o endereço local para abrir a aplicação
 no navegador.
 
-## Publicação
-
-O aplicativo pode ser publicado pelo [Streamlit Community
-Cloud](https://share.streamlit.io/) conectado ao repositório GitHub.
-
-Configuração de implantação:
-
--   **Repositório:** `gmairink/dupla-safra`
--   **Branch:** `main`
--   **Arquivo principal:** `src/app.py`
-
-O ambiente de hospedagem instala as dependências listadas em
-`requirements.txt`. Os arquivos NetCDF e shapefiles referenciados pelo
-código também precisam estar disponíveis no repositório ou em um
-armazenamento acessível à aplicação.
-
-## Atualizar o site
-
-Depois de editar e testar o código localmente, envie as alterações:
-
-``` bash
-git add src/app.py
-git commit -m "Descreva a alteração"
-git push
-```
-
-Se modificar as dependências, inclua também `requirements.txt`:
-
-``` bash
-git add src/app.py requirements.txt
-git commit -m "Update app and dependencies"
-git push
-```
-
-O Streamlit Community Cloud normalmente detecta novos commits na branch
-configurada e inicia uma nova implantação.
-
-## Estrutura relevante do projeto
+## Estrutura do projeto
 
 ``` text
 dupla-safra/
@@ -140,17 +101,6 @@ dupla-safra/
 ├── .gitignore
 └── requirements.txt
 ```
-
-## Tecnologias
-
--   Python
--   Streamlit
--   Plotly
--   GeoPandas
--   Xarray
--   NumPy
--   Pandas
--   NetCDF
 
 ## Repositório
 
