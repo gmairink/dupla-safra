@@ -781,8 +781,9 @@ def configure_map(fig, title):
         # Keep enough top space for the title while reducing the vertical gap
         # between the title and the map by letting the map fill more of the figure.
         # Aumenta a área útil do mapa e reduz margens laterais/superiores.
-        height=500,
-        margin=dict(l=8, r=8, t=22, b=0),
+        height=440,
+        autosize=True,
+        margin=dict(l=4, r=4, t=18, b=0),
         plot_bgcolor="#FFFFFF",
         paper_bgcolor="#FFFFFF",
         clickmode="event+select",
@@ -1263,7 +1264,7 @@ key_obs = f"observed_map_{year}_{st.session_state.selection_version}"
 
 key_error = f"error_map_{year}_{st.session_state.selection_version}"
 
-col_pred, col_obs, col_error = st.columns(3)
+col_pred, col_obs, col_error = st.columns(3, gap="small")
 
 with col_pred:
 
@@ -1274,6 +1275,8 @@ with col_pred:
         use_container_width=True,
 
         key=key_pred,
+
+        config={"responsive": True},
 
         on_select="rerun",
 
@@ -1292,6 +1295,8 @@ with col_obs:
 
         key=key_obs,
 
+        config={"responsive": True},
+
         on_select="rerun",
 
         selection_mode="points",
@@ -1308,6 +1313,8 @@ with col_error:
         use_container_width=True,
 
         key=key_error,
+
+        config={"responsive": True},
 
         on_select="rerun",
 
