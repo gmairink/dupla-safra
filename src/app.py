@@ -773,6 +773,8 @@ def configure_map(fig, title):
             text=title,
             x=0.5,
             xanchor="center",
+            y=0.99,
+            yanchor="top",
             font=dict(color="#222222", size=16),
         ),
         font=dict(family="Arial, sans-serif", size=12, color="#222222"),
@@ -780,7 +782,7 @@ def configure_map(fig, title):
         # between the title and the map by letting the map fill more of the figure.
         # Aumenta a área útil do mapa e reduz margens laterais/superiores.
         height=500,
-        margin=dict(l=8, r=8, t=30, b=0),
+        margin=dict(l=8, r=8, t=22, b=0),
         plot_bgcolor="#FFFFFF",
         paper_bgcolor="#FFFFFF",
         clickmode="event+select",
