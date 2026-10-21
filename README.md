@@ -113,7 +113,7 @@ dupla-safra/
 
 Acesse a aplicação publicada no Streamlit Community Cloud:
 
-**(https://dupla-safra.streamlit.app/)**
+**[Abrir o visualizador: Previsibilidade do fim da estação chuvosa](https://dupla-safra.streamlit.app/)**
 
 ## Situação da publicação e uso acadêmico
 
