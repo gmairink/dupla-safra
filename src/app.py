@@ -28,6 +28,22 @@ st.set_page_config(
 
 )
 
+st.markdown(
+    """
+    <style>
+        .block-container {
+            padding-top: 0.5rem;
+        }
+
+        h1 {
+            margin-top: 0;
+            padding-top: 0;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 # Estimate the available browser content width on the client. Browser zoom changes
 # this CSS width, so the Plotly figure height can track the actual width of the
 # three-column layout instead of staying fixed at 440 px. After changing browser
