@@ -31,13 +31,14 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+        [data-testid="stAppViewBlockContainer"],
         .block-container {
-            padding-top: 0.5rem;
+            padding-top: 0rem !important;
         }
 
         h1 {
-            margin-top: 0;
-            padding-top: 0;
+            margin-top: -0.5rem !important;
+            padding-top: 0 !important;
         }
     </style>
     """,
