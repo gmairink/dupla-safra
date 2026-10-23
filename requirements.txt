@@ -1,4 +1,5 @@
 streamlit>=1.46
+streamlit-js-eval
 geopandas
 pyogrio
 numpy

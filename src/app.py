@@ -10,6 +10,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 import streamlit as st
+from streamlit_js_eval import streamlit_js_eval
 
 import xarray as xr
 
@@ -26,6 +27,28 @@ st.set_page_config(
     layout="wide",
 
 )
+
+# Estimate the available browser content width on the client. Browser zoom changes
+# this CSS width, so the Plotly figure height can track the actual width of the
+# three-column layout instead of staying fixed at 440 px. After changing browser
+# zoom, reload the page so this value is measured again.
+_browser_width = streamlit_js_eval(
+    js_expressions="window.innerWidth",
+    key="responsive_map_viewport_width",
+)
+try:
+    _content_width = float(_browser_width) if _browser_width is not None else 0.0
+except (TypeError, ValueError):
+    _content_width = 0.0
+
+if _content_width >= 700:
+    _estimated_column_width = max(260.0, (_content_width - 48.0) / 3.0)
+    # Map extent has a 22.5° longitude span and a 15° latitude span (ratio 1.5).
+    # Add a small allowance for the title and Plotly margins; clamp the height so
+    # very narrow/wide windows remain usable.
+    MAP_HEIGHT = int(np.clip(_estimated_column_width / 1.5 + 24.0, 280, 440))
+else:
+    MAP_HEIGHT = 440
 
 # ============================================================
 
@@ -781,9 +804,9 @@ def configure_map(fig, title):
         # Keep enough top space for the title while reducing the vertical gap
         # between the title and the map by letting the map fill more of the figure.
         # Aumenta a área útil do mapa e reduz margens laterais/superiores.
-        height=440,
+        height=MAP_HEIGHT,
         autosize=True,
-        margin=dict(l=4, r=4, t=14, b=0),
+        margin=dict(l=4, r=4, t=12, b=0),
         plot_bgcolor="#FFFFFF",
         paper_bgcolor="#FFFFFF",
         clickmode="event+select",
