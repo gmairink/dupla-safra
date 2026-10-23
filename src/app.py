@@ -783,7 +783,7 @@ def configure_map(fig, title):
         # Aumenta a área útil do mapa e reduz margens laterais/superiores.
         height=440,
         autosize=True,
-        margin=dict(l=4, r=4, t=18, b=0),
+        margin=dict(l=4, r=4, t=14, b=0),
         plot_bgcolor="#FFFFFF",
         paper_bgcolor="#FFFFFF",
         clickmode="event+select",
@@ -858,7 +858,7 @@ def render_demise_legend():
         )
 
     html = (
-        '<div style="width:82%; margin:0 auto; padding:0 2px 4px 2px; box-sizing:border-box; '
+        '<div style="width:100%; margin:-10px auto 0; padding:0 0 4px 0; box-sizing:border-box; '
         'background:transparent; color:var(--text-color, inherit);">'
         '<div style="display:flex; width:100%; height:14px; border:0; box-sizing:border-box;">'
         + "".join(segments)
@@ -901,7 +901,7 @@ def render_error_legend():
         )
 
     html = (
-        '<div style="width:82%; margin:0 auto; padding:0 2px 4px 2px; box-sizing:border-box; '
+        '<div style="width:100%; margin:-10px auto 0; padding:0 0 4px 0; box-sizing:border-box; '
         'background:transparent; color:var(--text-color, inherit);">'
         f'<div style="width:100%; height:14px; background:{gradient}; border:0; box-sizing:border-box;"></div>'
         '<div style="position:relative; width:100%; height:25px;">'
