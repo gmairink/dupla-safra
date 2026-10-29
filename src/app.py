@@ -22,7 +22,7 @@ import xarray as xr
 
 st.set_page_config(
 
-    page_title="Previsão do fim da estação chuvosa",
+    page_title="Previsão do fim da estação chuvosa no Brasil Central",
 
     layout="wide",
 
@@ -1111,6 +1111,47 @@ def build_map(
 
 st.title("Previsão do fim da estação chuvosa")
 
+st.markdown(
+    """
+    Este modelo estatístico tem como objetivo prever o fim da estação
+    chuvosa na região central do Brasil com 2 a 3 meses de antecedência.
+    As previsões são disponibilizadas no início de março. No início de
+    julho, quando os dados observados estão disponíveis, são apresentadas
+    a data observada do fim da estação chuvosa e o respectivo erro da
+    previsão para o ano em questão.
+    """
+)
+
+@st.dialog("Declaração de isenção de responsabilidade", width="large")
+def show_disclaimer():
+    st.markdown(
+        """
+        O usuário assume todos os riscos relacionados ao uso das
+        informações disponibilizadas nas páginas web desta plataforma.
+        A Universidade Federal de Viçosa (UFV) fornece essas informações
+        na forma em que são apresentadas e isenta-se de todas as garantias,
+        expressas ou implícitas, incluindo, entre outras, as garantias
+        implícitas de adequação a uma finalidade específica.
+
+        Em nenhuma circunstância a UFV será responsável perante os usuários
+        ou terceiros por quaisquer danos diretos, indiretos, incidentais,
+        consequenciais ou especiais, nem por lucros cessantes decorrentes
+        do uso ou do uso indevido desses dados.
+        """
+    )
+
+disclaimer_col, icon_col = st.columns([0.96, 0.04])
+
+with disclaimer_col:
+    st.markdown(
+        "O uso dessas informações implica a aceitação da declaração "
+        "de isenção de responsabilidade."
+    )
+
+with icon_col:
+    if st.button("❕", help="Consultar a declaração de isenção de responsabilidade"):
+        show_disclaimer()
+        
 selected_municipality_label = st.selectbox(
     "Localizar município",
     options=[""] + municipality_labels,
