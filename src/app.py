@@ -1503,3 +1503,26 @@ if st.session_state.selected_lat is not None and st.session_state.selected_lon i
 else:
 
     st.info("Clique em uma célula da grade em qualquer um dos mapas para ver maiores detalhes.")
+    st.info("Caso a disposição dos mapas se desconfigure, atualize a página.")
+
+# ============================================================
+# FOOTER
+# ============================================================
+
+st.markdown(
+    """
+    <div style="
+        width: 100%;
+        box-sizing: border-box;
+        margin-top: 2rem;
+        padding: 0.75rem 0 0.5rem 0;
+        border-top: 1px solid rgba(128, 128, 128, 0.25);
+        text-align: right;
+        font-size: 0.85rem;
+        color: var(--text-color, #6b7280);
+    ">
+        Desenvolvido por <strong>Gustavo Mairink</strong>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
