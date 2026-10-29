@@ -1109,11 +1109,11 @@ def build_map(
 
 # ============================================================
 
-st.title("Previsão do fim da estação chuvosa")
+st.title("Previsão do fim da estação chuvosa no Brasil Central")
 
 st.markdown(
     """
-    Este modelo estatístico tem como objetivo prever o fim da estação
+    Este modelo tem como objetivo prever o fim da estação
     chuvosa na região central do Brasil com 2 a 3 meses de antecedência.
     As previsões são disponibilizadas no início de março. No início de
     julho, quando os dados observados estão disponíveis, são apresentadas
@@ -1140,7 +1140,7 @@ def show_disclaimer():
         """
     )
 
-disclaimer_col, icon_col = st.columns([0.96, 0.04])
+disclaimer_col, icon_col, empty_col = st.columns([0.54, 0.06, 0.40])
 
 with disclaimer_col:
     st.markdown(
@@ -1149,9 +1149,12 @@ with disclaimer_col:
     )
 
 with icon_col:
-    if st.button("❕", help="Consultar a declaração de isenção de responsabilidade"):
+    if st.button(
+        "❕",
+        help="Consultar a declaração de isenção de responsabilidade",
+    ):
         show_disclaimer()
-        
+
 selected_municipality_label = st.selectbox(
     "Localizar município",
     options=[""] + municipality_labels,
