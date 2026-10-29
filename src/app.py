@@ -1124,10 +1124,8 @@ with description_col:
         As previsões são disponibilizadas no início de março. No início
         de julho, quando os dados observados estão disponíveis, são
         apresentadas a data observada do fim da estação chuvosa e o
-        respectivo erro da previsão para o ano em questão.
-
-        O uso dessas informações implica a aceitação da declaração
-        de isenção de responsabilidade.
+        respectivo erro da previsão para o ano em questão. O uso dessas 
+        informações implica a aceitação da declaração de isenção de responsabilidade.
         """
     )
 
