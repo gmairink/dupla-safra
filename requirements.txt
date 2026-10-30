@@ -7,3 +7,4 @@ pandas
 plotly
 xarray
 netCDF4
+PyMuPDF

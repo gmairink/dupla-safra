@@ -17,6 +17,8 @@ import xarray as xr
 import base64
 from pathlib import Path
 
+import pymupdf
+
 # ============================================================
 
 # STREAMLIT CONFIGURATION
@@ -1115,29 +1117,68 @@ def build_map(
 st.title("Previsão do fim da estação chuvosa no Brasil Central")
 
 
+
 # ============================================================
 # LOAD MODEL INFORMATION FIGURES
 # ============================================================
 
-# Define the project and assets directories
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Define the assets directory.
+# BASE_DIR is already defined in the project paths section.
 ASSETS_DIR = BASE_DIR / "assets"
 
-# Define the figure paths
 FIGURE_PDF_PATH = ASSETS_DIR / "fig_regioes_oceano.pdf"
 EQUATION_PNG_PATH = ASSETS_DIR / "equacao.png"
 
-# Encode the PDF and PNG files in base64
-figure_pdf_base64 = base64.b64encode(
-    FIGURE_PDF_PATH.read_bytes()
+
+# Convert the first page of the PDF into a high-resolution PNG.
+# The result is cached to avoid converting the PDF on every rerun.
+@st.cache_data(show_spinner=False)
+def convert_pdf_to_png(pdf_path: str, file_mtime: float) -> bytes:
+    """Convert the first PDF page into a high-resolution PNG image."""
+
+    with pymupdf.open(pdf_path) as pdf:
+
+        if len(pdf) == 0:
+            raise ValueError("The oceanic regions PDF is empty.")
+
+        page = pdf.load_page(0)
+
+        # Render at approximately 288 DPI.
+        pixmap = page.get_pixmap(
+            matrix=pymupdf.Matrix(4, 4),
+            alpha=False
+        )
+
+        return pixmap.tobytes("png")
+
+
+# Check whether the required files exist.
+if not FIGURE_PDF_PATH.is_file():
+    st.error(f"Oceanic regions PDF not found: {FIGURE_PDF_PATH}")
+    st.stop()
+
+if not EQUATION_PNG_PATH.is_file():
+    st.error(f"Equation image not found: {EQUATION_PNG_PATH}")
+    st.stop()
+
+
+# Convert and encode the figures.
+figure_png_bytes = convert_pdf_to_png(
+    str(FIGURE_PDF_PATH),
+    FIGURE_PDF_PATH.stat().st_mtime
+)
+
+figure_png_base64 = base64.b64encode(
+    figure_png_bytes
 ).decode("utf-8")
 
 equation_png_base64 = base64.b64encode(
     EQUATION_PNG_PATH.read_bytes()
 ).decode("utf-8")
 
-# Create data URIs for embedding the files in HTML
-figure_pdf_uri = f"data:application/pdf;base64,{figure_pdf_base64}"
+
+# Create image data URIs.
+figure_png_uri = f"data:image/png;base64,{figure_png_base64}"
 equation_png_uri = f"data:image/png;base64,{equation_png_base64}"
 
 
@@ -1146,10 +1187,15 @@ equation_png_uri = f"data:image/png;base64,{equation_png_base64}"
 # ============================================================
 
 html_content = """
+
 <div id="inline-information-widget">
 
-    <!-- Main project description -->
+    <!-- ====================================================
+         MAIN PROJECT DESCRIPTION
+         ==================================================== -->
+
     <p class="project-description">
+
         O modelo tem como objetivo prever o fim da estação chuvosa na região central
         do Brasil com 1 a 3 meses de antecedência. As previsões são disponibilizadas
         no início de março. No início de julho, quando os dados observados estão
@@ -1157,6 +1203,7 @@ html_content = """
         com as datas observadas de término da estação chuvosa e os respectivos
         erros de previsão. Maiores detalhes sobre o modelo desenvolvido
         podem ser consultados em
+
         <button
             type="button"
             class="inline-icon info-icon"
@@ -1164,8 +1211,10 @@ html_content = """
             aria-label="Mais informações sobre o modelo"
             title="Mais informações sobre o modelo"
         >i</button>.
+
         O uso dessas informações implica a aceitação da declaração de isenção
         de responsabilidade especificada em
+
         <button
             type="button"
             class="inline-icon warning-icon"
@@ -1173,6 +1222,7 @@ html_content = """
             aria-label="Consultar a declaração de isenção de responsabilidade"
             title="Consultar a declaração de isenção de responsabilidade"
         >!</button>.
+
     </p>
 
 
@@ -1183,13 +1233,17 @@ html_content = """
     <dialog id="model-info-modal" class="app-modal">
 
         <div class="modal-header">
+
             <strong>Informações sobre o modelo</strong>
+
             <button
                 type="button"
                 class="modal-close"
                 aria-label="Fechar"
             >×</button>
+
         </div>
+
 
         <div class="modal-body">
 
@@ -1203,6 +1257,7 @@ html_content = """
                 uma segunda safra.
             </p>
 
+
             <p>
                 O modelo estatístico foi desenvolvido com base em correlações fortes
                 e estatisticamente significativas identificadas entre a temperatura
@@ -1210,6 +1265,7 @@ html_content = """
                 Oceano Atlântico e duas no Oceano Pacífico, e a data de término da
                 estação chuvosa na região central do Brasil.
             </p>
+
 
             <p>
                 A Figura 1 apresenta a localização das três regiões oceânicas e as
@@ -1220,18 +1276,24 @@ html_content = """
                 oceânicas selecionadas.
             </p>
 
-            <!-- Figure 1: Oceanic regions and SAM2 domain -->
+
+            <!-- FIGURE 1: OCEANIC REGIONS AND SAM2 DOMAIN -->
+
             <div class="figure-container">
-                <iframe
-                    class="pdf-frame"
-                    src="FIGURE_PDF_URI"
-                    title="Figura 1 - Regiões oceânicas e área de aplicação SAM2"
-                ></iframe>
+
+                <img
+                    src="FIGURE_PNG_URI"
+                    alt="Figura 1 - Regiões oceânicas e área de aplicação SAM2"
+                    class="figure-image"
+                >
+
                 <p class="figure-caption">
                     Figura 1. Regiões oceânicas selecionadas e área de aplicação
                     do modelo no Brasil Central (SAM2).
                 </p>
+
             </div>
+
 
             <p>
                 Do ponto de vista físico, parte-se da hipótese de que as regiões
@@ -1244,6 +1306,7 @@ html_content = """
                 estação chuvosa.
             </p>
 
+
             <p>
                 O modelo foi construído utilizando as temperaturas médias mensais
                 da superfície do mar nas regiões oceânicas selecionadas, bem como
@@ -1253,18 +1316,24 @@ html_content = """
                 na Equação 1.
             </p>
 
-            <!-- Equation 1: Multivariate linear regression -->
+
+            <!-- EQUATION 1: MULTIVARIATE LINEAR REGRESSION -->
+
             <div class="equation-container">
+
                 <img
                     src="EQUATION_PNG_URI"
                     alt="Equação 1 - Regressão linear multivariada"
                     class="equation-image"
                 >
+
                 <p class="figure-caption">
                     Equação 1. Modelo de regressão linear multivariada utilizado
                     para estimar a data de término da estação chuvosa.
                 </p>
+
             </div>
+
 
             <p>
                 Para a avaliação do modelo, os anos disponíveis foram divididos
@@ -1277,6 +1346,7 @@ html_content = """
                 2016, 2018, 2020, 2021 e 2022.
             </p>
 
+
             <p>
                 O erro da previsão foi calculado como a diferença entre a data
                 prevista e a data observada (previsto − observado). Portanto,
@@ -1285,6 +1355,7 @@ html_content = """
                 previsão de término anterior à data observada.
             </p>
 
+
             <p>
                 De maneira geral, o modelo apresenta melhor desempenho na porção
                 central da região delimitada, com uma redução gradual de seu
@@ -1292,6 +1363,7 @@ html_content = """
             </p>
 
         </div>
+
     </dialog>
 
 
@@ -1302,13 +1374,17 @@ html_content = """
     <dialog id="disclaimer-modal" class="app-modal">
 
         <div class="modal-header">
+
             <strong>Declaração de isenção de responsabilidade</strong>
+
             <button
                 type="button"
                 class="modal-close"
                 aria-label="Fechar"
             >×</button>
+
         </div>
+
 
         <div class="modal-body">
 
@@ -1318,12 +1394,14 @@ html_content = """
                 autor, com atividades realizadas em um laboratório da instituição.
             </p>
 
+
             <p>
                 As informações disponibilizadas nesta plataforma são apresentadas
                 na forma em que foram produzidas, sem garantias expressas ou
                 implícitas, incluindo, entre outras, garantias de adequação a uma
                 finalidade específica.
             </p>
+
 
             <p>
                 O usuário assume todos os riscos relacionados ao uso dessas
@@ -1334,181 +1412,287 @@ html_content = """
             </p>
 
         </div>
+
     </dialog>
 
 </div>
 
 
-<!-- ========================================================
+<!-- ============================================================
      CSS
-     ======================================================== -->
+     ============================================================ -->
 
 <style>
 
     #inline-information-widget {
+
         width: 100%;
         line-height: 1.6;
         color: var(--text-color, inherit);
+
     }
 
+
+    /* Main description */
+
     #inline-information-widget .project-description {
+
         margin: 0;
+
     }
 
 
     /* Inline information icons */
 
     #inline-information-widget .inline-icon {
+
         display: inline-flex;
         align-items: center;
         justify-content: center;
+
         width: 17px;
         height: 17px;
+
         margin: 0 2px;
         padding: 0;
+
         border: 0;
         border-radius: 50%;
+
         color: #ffffff;
+
         font-family: Arial, sans-serif;
         font-size: 12px;
         font-weight: 700;
         line-height: 1;
+
         vertical-align: baseline;
         cursor: pointer;
+
     }
+
 
     #inline-information-widget .info-icon {
+
         background: #2878C8;
+
     }
+
 
     #inline-information-widget .info-icon:hover {
+
         background: #174b82;
+
     }
+
 
     #inline-information-widget .warning-icon {
+
         background: #D97706;
+
     }
 
+
     #inline-information-widget .warning-icon:hover {
+
         background: #A65305;
+
     }
+
 
     #inline-information-widget .inline-icon:focus-visible,
     #inline-information-widget .modal-close:focus-visible {
+
         outline: 2px solid #2878C8;
         outline-offset: 3px;
+
     }
 
 
     /* Modal window */
 
     #inline-information-widget .app-modal {
+
         width: min(850px, calc(100vw - 32px));
         max-width: calc(100vw - 32px);
+
         max-height: min(86vh, 850px);
+
         margin: auto;
         padding: 0;
+
         border: 1px solid rgba(0, 0, 0, 0.12);
         border-radius: 4px;
+
         background: #ffffff;
         color: #555555;
+
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.24);
+
         overflow: hidden;
+
     }
 
+
     #inline-information-widget .app-modal::backdrop {
+
         background: rgba(0, 0, 0, 0.48);
+
     }
 
 
     /* Modal header */
 
     #inline-information-widget .modal-header {
+
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
+
         gap: 1rem;
+
         padding: 16px 20px;
+
         border-bottom: 1px solid #e5e5e5;
+
         color: #333333;
+
         font-size: 1rem;
         line-height: 1.4;
+
     }
 
+
     #inline-information-widget .modal-close {
+
         flex: 0 0 auto;
+
         margin: -5px -7px 0 0;
         padding: 0 4px;
+
         border: 0;
         background: transparent;
+
         color: #888888;
+
         font-size: 25px;
         font-weight: 300;
         line-height: 1;
+
         cursor: pointer;
+
     }
 
+
     #inline-information-widget .modal-close:hover {
+
         color: #222222;
+
     }
 
 
     /* Modal body */
 
     #inline-information-widget .modal-body {
+
         max-height: calc(86vh - 65px);
+
         overflow-y: auto;
+
         padding: 20px 24px 24px;
+
         font-size: 0.95rem;
         line-height: 1.6;
+
         text-align: justify;
+
     }
+
 
     #inline-information-widget .modal-body p {
+
         margin: 0 0 1rem;
+
     }
+
 
     #inline-information-widget .modal-body p:last-child {
+
         margin-bottom: 0;
+
     }
 
 
-    /* Figure and equation */
+    /* Figure and equation containers */
 
     #inline-information-widget .figure-container,
     #inline-information-widget .equation-container {
+
         width: 100%;
         margin: 1.4rem auto;
+
         text-align: center;
+
     }
 
-    #inline-information-widget .pdf-frame {
+
+    /* Figure 1: converted from PDF to PNG */
+
+    #inline-information-widget .figure-image {
+
         display: block;
+
         width: 100%;
-        height: 480px;
-        border: 1px solid #e5e5e5;
-        background: #ffffff;
+        max-width: 100%;
+
+        height: auto;
+
+        margin: 0 auto;
+
+        object-fit: contain;
+
     }
+
+
+    /* Equation image */
 
     #inline-information-widget .equation-image {
+
         display: block;
+
         width: 100%;
         max-width: 650px;
+
         height: auto;
+
         margin: 0 auto;
+
+        object-fit: contain;
+
     }
+
+
+    /* Figure captions */
 
     #inline-information-widget .figure-caption {
+
         margin-top: 0.5rem;
+
         color: #666666;
+
         font-size: 0.82rem;
         line-height: 1.4;
+
         text-align: center;
+
     }
 
+
     #inline-information-widget .modal-body a {
+
         color: #2878C8;
         text-decoration: underline;
+
     }
 
 
@@ -1517,26 +1701,29 @@ html_content = """
     @media (max-width: 600px) {
 
         #inline-information-widget .modal-body {
+
             padding: 16px;
+
             font-size: 0.9rem;
+
         }
 
-        #inline-information-widget .pdf-frame {
-            height: 350px;
-        }
 
         #inline-information-widget .app-modal {
+
             width: calc(100vw - 20px);
             max-width: calc(100vw - 20px);
+
         }
+
     }
 
 </style>
 
 
-<!-- ========================================================
+<!-- ============================================================
      JAVASCRIPT: OPEN AND CLOSE MODALS
-     ======================================================== -->
+     ============================================================ -->
 
 <script>
 
@@ -1544,8 +1731,9 @@ html_content = """
 
         const widgetId = "inline-information-widget";
 
-        // Avoid registering duplicate event listeners
+        // Avoid registering duplicate event listeners.
         if (window.__inlineModalHandlersInstalled) return;
+
 
         document.addEventListener("click", (event) => {
 
@@ -1558,23 +1746,27 @@ html_content = """
             if (!(target instanceof Element)) return;
 
 
-            // Open the selected modal
+            // Open the selected modal.
             const trigger = target.closest("[data-modal-trigger]");
 
             if (trigger && widget.contains(trigger)) {
 
                 const modalId = trigger.getAttribute("data-modal-trigger");
+
                 const modal = widget.querySelector(`#${modalId}`);
 
                 if (modal && !modal.open) {
+
                     modal.showModal();
+
                 }
 
                 return;
+
             }
 
 
-            // Close the modal using the X button
+            // Close the modal using the X button.
             const closeButton = target.closest(".modal-close");
 
             if (closeButton && widget.contains(closeButton)) {
@@ -1582,26 +1774,31 @@ html_content = """
                 const modal = closeButton.closest("dialog");
 
                 if (modal && modal.open) {
+
                     modal.close();
+
                 }
 
                 return;
+
             }
 
 
-            // Close the modal when clicking outside its content
+            // Close the modal when clicking outside its content.
             if (
                 target instanceof HTMLDialogElement &&
                 target.open &&
                 target.classList.contains("app-modal")
             ) {
+
                 target.close();
+
             }
 
         });
 
 
-        // Allow closing the modal using the Escape key
+        // Close open dialogs using the Escape key.
         document.addEventListener("keydown", (event) => {
 
             if (event.key !== "Escape") return;
@@ -1611,7 +1808,9 @@ html_content = """
             if (!widget) return;
 
             widget.querySelectorAll(".app-modal[open]").forEach((modal) => {
+
                 modal.close();
+
             });
 
         });
@@ -1622,12 +1821,16 @@ html_content = """
     })();
 
 </script>
+
 """
 
-# Insert the encoded figures into the HTML
+# ============================================================
+# INSERT FIGURES INTO HTML
+# ============================================================
+
 html_content = html_content.replace(
-    "FIGURE_PDF_URI",
-    figure_pdf_uri
+    "FIGURE_PNG_URI",
+    figure_png_uri
 )
 
 html_content = html_content.replace(
@@ -1635,12 +1838,17 @@ html_content = html_content.replace(
     equation_png_uri
 )
 
-# Render the description and modal windows
+
+# ============================================================
+# RENDER DESCRIPTION AND MODAL WINDOWS
+# ============================================================
+
 st.html(
     html_content,
     unsafe_allow_javascript=True,
     width="stretch",
 )
+
 
 selected_municipality_label = st.selectbox(
     "Localizar município",
