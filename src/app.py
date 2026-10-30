@@ -1119,11 +1119,11 @@ st.html(
         <p>
             Este modelo tem como objetivo prever o fim da estação chuvosa na região
             central do Brasil com 1 a 3 meses de antecedência. As previsões são
-            disponibilizadas no início de março. No início de julho, quando os dados
-            de precipitação estão disponíveis, são apresentadas a data observada do
-            fim da estação chuvosa e o respectivo erro da previsão.
-            O uso dessas informações implica a aceitação da declaração de isenção
-            de responsabilidade.<button
+            disponibilizadas no início de março. No início de julho, quando os 
+            dados de precipitação estão disponíveis, a aplicação apresenta a 
+            data observada do fim da estação chuvosa e o respectivo erro da previsão.
+            O uso dessas informações implica no aceite da exoneração 
+            de responsabilidade especificada em <button
                 id="disclaimer-inline-trigger"
                 type="button"
                 aria-label="Consultar a declaração de isenção de responsabilidade"
