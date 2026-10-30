@@ -1111,127 +1111,38 @@ def build_map(
 
 st.title("Previsão do fim da estação chuvosa no Brasil Central")
 
-# Description and disclaimer icon are kept in the same text flow.
-# The native HTML <details> element opens the legal notice without a separate
-# Streamlit column or an additional Python package.
-st.markdown(
+# Description with an inline information icon and a dismissible disclaimer.
+# The click-outside behavior is handled by a delegated browser event listener.
+st.html(
     """
-    <style>
-        .description-with-disclaimer {
-            line-height: 1.6;
-        }
-
-        .inline-disclaimer {
-            display: inline-block;
-            position: relative;
-            margin-left: 0.3rem;
-            vertical-align: middle;
-        }
-
-        .inline-disclaimer > summary {
-            list-style: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 17px;
-            height: 17px;
-            border-radius: 50%;
-            background: #2563a6;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-            line-height: 1;
-            user-select: none;
-        }
-
-        .inline-disclaimer > summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .inline-disclaimer > summary:hover {
-            background: #174b82;
-        }
-
-        .inline-disclaimer[open] .disclaimer-popup {
-            position: absolute;
-            z-index: 10000;
-            top: calc(100% + 8px);
-            right: 0;
-            width: min(520px, calc(100vw - 2rem));
-            max-height: 65vh;
-            overflow-y: auto;
-            box-sizing: border-box;
-            padding: 1rem 1.1rem;
-            border: 1px solid rgba(128, 128, 128, 0.35);
-            border-radius: 8px;
-            background: var(--secondary-background-color, #ffffff);
-            color: var(--text-color, #262730);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-            font-size: 0.92rem;
-            line-height: 1.55;
-        }
-
-        .inline-disclaimer[open] .disclaimer-popup p {
-            margin: 0.5rem 0 0 0;
-        }
-    </style>
-
-    <div class="description-with-disclaimer">
-        Este modelo tem como objetivo prever o fim da estação chuvosa na região
-        central do Brasil com 1 a 3 meses de antecedência. As previsões são
-        disponibilizadas no início de março. No início de julho, quando os dados
-        de precipitação estão disponíveis, são apresentadas a data observada do
-        fim da estação chuvosa e o respectivo erro da previsão.
-        O uso dessas informações implica a aceitação da declaração de isenção
-        de responsabilidade.
-
-
-
-                <button
-            type="button"
-            popovertarget="disclaimer-popup"
-            title="Consultar a declaração de isenção de responsabilidade"
-            aria-label="Consultar declaração de isenção de responsabilidade"
-            style="
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 17px;
-                height: 17px;
-                margin-left: 5px;
-                padding: 0;
-                border: none;
-                border-radius: 50%;
-                background: #2878C8;
-                color: white;
-                font-size: 12px;
-                font-weight: bold;
-                cursor: pointer;
-                vertical-align: middle;
-            "
-        >
-            i
-        </button>
+    <div id="disclaimer-inline-widget" class="description-with-disclaimer">
+        <p>
+            Este modelo tem como objetivo prever o fim da estação chuvosa na região
+            central do Brasil com 1 a 3 meses de antecedência. As previsões são
+            disponibilizadas no início de março. No início de julho, quando os dados
+            de precipitação estão disponíveis, são apresentadas a data observada do
+            fim da estação chuvosa e o respectivo erro da previsão.
+            O uso dessas informações implica a aceitação da declaração de isenção
+            de responsabilidade.<button
+                id="disclaimer-inline-trigger"
+                type="button"
+                aria-label="Consultar a declaração de isenção de responsabilidade"
+                aria-expanded="false"
+                aria-controls="disclaimer-inline-panel"
+                title="Consultar a declaração de isenção de responsabilidade"
+            >i</button>
+        </p>
 
         <div
-            id="disclaimer-popup"
-            popover="auto"
-            style="
-                width: min(560px, calc(100vw - 32px));
-                max-height: 70vh;
-                overflow-y: auto;
-                padding: 20px;
-                border: 1px solid #d0d7de;
-                border-radius: 10px;
-                box-shadow: 0 4px 18px rgba(0,0,0,0.18);
-                color: #333;
-                line-height: 1.6;
-            "
+            id="disclaimer-inline-panel"
+            class="disclaimer-popup"
+            role="dialog"
+            aria-labelledby="disclaimer-inline-title"
+            hidden
         >
-            <strong>Declaração de isenção de responsabilidade</strong>
-
+            <strong id="disclaimer-inline-title">
+                Declaração de isenção de responsabilidade
+            </strong>
             <p>
                 O usuário assume todos os riscos relacionados ao uso das
                 informações disponibilizadas nas páginas web desta plataforma.
@@ -1240,7 +1151,6 @@ st.markdown(
                 expressas ou implícitas, incluindo, entre outras, as garantias
                 implícitas de adequação a uma finalidade específica.
             </p>
-
             <p>
                 Em nenhuma circunstância a UFV será responsável perante os usuários
                 ou terceiros por quaisquer danos diretos, indiretos, incidentais,
@@ -1248,12 +1158,123 @@ st.markdown(
                 do uso ou do uso indevido desses dados.
             </p>
         </div>
-
-
-        
     </div>
+
+    <style>
+        #disclaimer-inline-widget {
+            position: relative;
+            width: 100%;
+            line-height: 1.6;
+            color: var(--text-color, inherit);
+        }
+
+        #disclaimer-inline-widget > p {
+            margin: 0;
+        }
+
+        #disclaimer-inline-trigger {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 17px;
+            height: 17px;
+            margin-left: 5px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: #2878C8;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1;
+            vertical-align: baseline;
+            cursor: pointer;
+        }
+
+        #disclaimer-inline-trigger:hover {
+            background: #174b82;
+        }
+
+        #disclaimer-inline-trigger:focus-visible {
+            outline: 2px solid #2878C8;
+            outline-offset: 3px;
+        }
+
+        #disclaimer-inline-panel[hidden] {
+            display: none !important;
+        }
+
+        #disclaimer-inline-panel {
+            position: absolute;
+            z-index: 99999;
+            top: calc(100% + 8px);
+            right: 0;
+            width: min(560px, calc(100vw - 32px));
+            max-height: 70vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            padding: 18px 20px;
+            border: 1px solid rgba(128, 128, 128, 0.4);
+            border-radius: 10px;
+            background: var(--secondary-background-color, #ffffff);
+            color: var(--text-color, #262730);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        #disclaimer-inline-panel p {
+            margin: 0.65rem 0 0;
+        }
+    </style>
+
+    <script>
+        (() => {
+            // Install the document-level handlers only once. The handlers look
+            // up the current widget each time, so they also work after reruns.
+            if (window.__disclaimerInlineHandlersInstalled) return;
+
+            document.addEventListener("click", (event) => {
+                const widget = document.getElementById("disclaimer-inline-widget");
+                if (!widget) return;
+
+                const trigger = document.getElementById("disclaimer-inline-trigger");
+                const panel = document.getElementById("disclaimer-inline-panel");
+                if (!trigger || !panel) return;
+
+                if (event.target.closest("#disclaimer-inline-trigger")) {
+                    const isOpen = !panel.hasAttribute("hidden");
+                    if (isOpen) {
+                        panel.setAttribute("hidden", "");
+                        trigger.setAttribute("aria-expanded", "false");
+                    } else {
+                        panel.removeAttribute("hidden");
+                        trigger.setAttribute("aria-expanded", "true");
+                    }
+                } else if (!widget.contains(event.target)) {
+                    panel.setAttribute("hidden", "");
+                    trigger.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key !== "Escape") return;
+
+                const panel = document.getElementById("disclaimer-inline-panel");
+                const trigger = document.getElementById("disclaimer-inline-trigger");
+                if (panel && trigger) {
+                    panel.setAttribute("hidden", "");
+                    trigger.setAttribute("aria-expanded", "false");
+                }
+            });
+
+            window.__disclaimerInlineHandlersInstalled = true;
+        })();
+    </script>
     """,
-    unsafe_allow_html=True,
+    unsafe_allow_javascript=True,
+    width="stretch",
 )
 
 selected_municipality_label = st.selectbox(
