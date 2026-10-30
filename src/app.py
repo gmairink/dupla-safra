@@ -1308,15 +1308,15 @@ html_content = """
 
 
             <p>
-                O modelo foi construído utilizando as coordenadas geográficas dos 
-                pixels pertencentes à região SAM2, representadas pela latitude (\(\varphi\)) e 
-                longitude (\(\lambda\)), e as médias mensais da temperatura da superfície do mar 
-                (TSM) em três regiões oceânicas selecionadas: RA, em fevereiro (\(RA_{\mathrm{Fev}}\)); 
-                RP1, em janeiro (\(RP1_{\mathrm{Jan}}\)); e RP2-2, em fevereiro (\(RP2\text{-}2_{\mathrm{Fev}}\)). 
-                Essas variáveis foram utilizadas como preditores em uma regressão linear 
-                multivariada, apresentada na Equação 1.
+                O modelo foi construído utilizando as coordenadas geográficas dos pixels
+                pertencentes à região SAM2, representadas pela latitude (&phi;) e longitude
+                (&lambda;), e as médias mensais da temperatura da superfície do mar (TSM)
+                em três regiões oceânicas selecionadas: RA, em fevereiro
+                (RA<sub>Fev</sub>); RP1, em janeiro (RP1<sub>Jan</sub>); e RP2-2,
+                em fevereiro (RP2-2<sub>Fev</sub>). Essas variáveis foram utilizadas
+                como preditores em uma regressão linear multivariada, apresentada
+                na Equação 1.
             </p>
-
 
             <!-- EQUATION 1: MULTIVARIATE LINEAR REGRESSION -->
 
