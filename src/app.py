@@ -1133,8 +1133,7 @@ st.html(
                 aria-expanded="false"
                 title="Mais informações sobre o modelo"
             >i</button>.
-            O uso dessas informações implica a aceitação da declaração de isenção
-            de responsabilidade especificada em
+            O uso dessas informações implica no aceite da exoneração de responsabilidade especificada em
             <button
                 type="button"
                 class="inline-icon warning-icon"
