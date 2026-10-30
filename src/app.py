@@ -1111,10 +1111,8 @@ def build_map(
 
 st.title("Previsão do fim da estação chuvosa no Brasil Central")
 
-# Description with two inline information controls:
-# - the information icon opens the project documentation;
-# - the warning icon opens the disclaimer.
-# Both panels close when the user clicks outside or presses Escape.
+# Description with two inline information icons and centered modal dialogs.
+# Dialogs close through the X button, a click on the dark backdrop, or Escape.
 st.html(
     """
     <div id="inline-information-widget">
@@ -1123,59 +1121,67 @@ st.html(
             central do Brasil com 1 a 3 meses de antecedência. As previsões são
             disponibilizadas no início de março. No início de julho, quando os dados
             de precipitação estão disponíveis, a aplicação apresenta a data observada
-            do fim da estação chuvosa e o respectivo erro da previsão.
-            Maiores informações sobre o modelo desenvolvido podem ser consultadas em
+            do fim da estação chuvosa e o respectivo erro da previsão. Maiores
+            informações sobre o modelo desenvolvido podem ser consultadas em
             <button
                 type="button"
                 class="inline-icon info-icon"
-                data-popup-trigger="model-info"
+                data-modal-trigger="model-info-modal"
                 aria-label="Mais informações sobre o modelo"
-                aria-expanded="false"
                 title="Mais informações sobre o modelo"
             >i</button>.
-            O uso dessas informações implica no aceite da exoneração de responsabilidade especificada em
+            O uso dessas informações implica a aceitação da declaração de isenção
+            de responsabilidade especificada em
             <button
                 type="button"
                 class="inline-icon warning-icon"
-                data-popup-trigger="disclaimer"
+                data-modal-trigger="disclaimer-modal"
                 aria-label="Consultar a declaração de isenção de responsabilidade"
-                aria-expanded="false"
                 title="Consultar a declaração de isenção de responsabilidade"
             >!</button>.
         </p>
 
-        <div id="model-info-panel" class="inline-popup" data-popup-panel="model-info" hidden>
-            <strong>Informações sobre o modelo</strong>
-            <p>
-                A documentação e os arquivos relacionados ao desenvolvimento
-                desta aplicação estão disponíveis no repositório do projeto:
-                <a href="https://github.com/gmairink/dupla-safra" target="_blank"
-                   rel="noopener noreferrer">gmairink/dupla-safra</a>.
-            </p>
-        </div>
+        <dialog id="model-info-modal" class="app-modal">
+            <div class="modal-header">
+                <strong>Informações sobre o modelo</strong>
+                <button type="button" class="modal-close" aria-label="Fechar">×</button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    A documentação e os arquivos relacionados ao desenvolvimento
+                    desta aplicação estão disponíveis no repositório do projeto:
+                    <a href="https://github.com/gmairink/dupla-safra" target="_blank"
+                       rel="noopener noreferrer">gmairink/dupla-safra</a>.
+                </p>
+            </div>
+        </dialog>
 
-        <div id="disclaimer-panel" class="inline-popup" data-popup-panel="disclaimer" hidden>
-            <strong>Declaração de isenção de responsabilidade</strong>
-            <p>
-                O usuário assume todos os riscos relacionados ao uso das
-                informações disponibilizadas nas páginas web desta plataforma.
-                A Universidade Federal de Viçosa (UFV) fornece essas informações
-                na forma em que são apresentadas e isenta-se de todas as garantias,
-                expressas ou implícitas, incluindo, entre outras, as garantias
-                implícitas de adequação a uma finalidade específica.
-            </p>
-            <p>
-                Em nenhuma circunstância a UFV será responsável perante os usuários
-                ou terceiros por quaisquer danos diretos, indiretos, incidentais,
-                consequenciais ou especiais, nem por lucros cessantes decorrentes
-                do uso ou do uso indevido desses dados.
-            </p>
-        </div>
+        <dialog id="disclaimer-modal" class="app-modal">
+            <div class="modal-header">
+                <strong>Declaração de isenção de responsabilidade</strong>
+                <button type="button" class="modal-close" aria-label="Fechar">×</button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    O usuário assume todos os riscos relacionados ao uso das
+                    informações disponibilizadas nas páginas web desta plataforma.
+                    A Universidade Federal de Viçosa (UFV) fornece essas informações
+                    na forma em que são apresentadas e isenta-se de todas as garantias,
+                    expressas ou implícitas, incluindo, entre outras, as garantias
+                    implícitas de adequação a uma finalidade específica.
+                </p>
+                <p>
+                    Em nenhuma circunstância a UFV será responsável perante os usuários
+                    ou terceiros por quaisquer danos diretos, indiretos, incidentais,
+                    consequenciais ou especiais, nem por lucros cessantes decorrentes
+                    do uso ou do uso indevido desses dados.
+                </p>
+            </div>
+        </dialog>
     </div>
 
     <style>
         #inline-information-widget {
-            position: relative;
             width: 100%;
             line-height: 1.6;
             color: var(--text-color, inherit);
@@ -1220,39 +1226,77 @@ st.html(
             background: #A65305;
         }
 
-        #inline-information-widget .inline-icon:focus-visible {
-            outline: 2px solid currentColor;
+        #inline-information-widget .inline-icon:focus-visible,
+        #inline-information-widget .modal-close:focus-visible {
+            outline: 2px solid #2878C8;
             outline-offset: 3px;
         }
 
-        #inline-information-widget .inline-popup[hidden] {
-            display: none !important;
-        }
-
-        #inline-information-widget .inline-popup {
-            position: absolute;
-            z-index: 99999;
-            top: calc(100% + 8px);
-            right: 0;
+        #inline-information-widget .app-modal {
             width: min(560px, calc(100vw - 32px));
-            max-height: 70vh;
+            max-width: calc(100vw - 32px);
+            max-height: min(78vh, 720px);
+            margin: auto;
+            padding: 0;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            border-radius: 4px;
+            background: #ffffff;
+            color: #555555;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.24);
+            overflow: hidden;
+        }
+
+        #inline-information-widget .app-modal::backdrop {
+            background: rgba(0, 0, 0, 0.48);
+        }
+
+        #inline-information-widget .modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e5e5;
+            color: #333333;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        #inline-information-widget .modal-close {
+            flex: 0 0 auto;
+            margin: -5px -7px 0 0;
+            padding: 0 4px;
+            border: 0;
+            background: transparent;
+            color: #888888;
+            font-size: 25px;
+            font-weight: 300;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        #inline-information-widget .modal-close:hover {
+            color: #222222;
+        }
+
+        #inline-information-widget .modal-body {
+            max-height: calc(78vh - 65px);
             overflow-y: auto;
-            box-sizing: border-box;
-            padding: 18px 20px;
-            border: 1px solid rgba(128, 128, 128, 0.4);
-            border-radius: 10px;
-            background: var(--secondary-background-color, #ffffff);
-            color: var(--text-color, #262730);
-            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
-            font-size: 0.92rem;
+            padding: 18px 22px 22px;
+            font-size: 0.95rem;
             line-height: 1.6;
+            text-align: justify;
         }
 
-        #inline-information-widget .inline-popup p {
-            margin: 0.65rem 0 0;
+        #inline-information-widget .modal-body p {
+            margin: 0 0 0.8rem;
         }
 
-        #inline-information-widget .inline-popup a {
+        #inline-information-widget .modal-body p:last-child {
+            margin-bottom: 0;
+        }
+
+        #inline-information-widget .modal-body a {
             color: #2878C8;
             text-decoration: underline;
         }
@@ -1261,56 +1305,37 @@ st.html(
     <script>
         (() => {
             const widgetId = "inline-information-widget";
-            if (window.__inlineInformationHandlersInstalled) return;
-
-            function closeAll(widget) {
-                widget.querySelectorAll("[data-popup-panel]").forEach((panel) => {
-                    panel.hidden = true;
-                });
-                widget.querySelectorAll("[data-popup-trigger]").forEach((trigger) => {
-                    trigger.setAttribute("aria-expanded", "false");
-                });
-            }
+            if (window.__inlineModalHandlersInstalled) return;
 
             document.addEventListener("click", (event) => {
                 const widget = document.getElementById(widgetId);
                 if (!widget) return;
 
-                const trigger = event.target.closest("[data-popup-trigger]");
-                if (trigger && widget.contains(trigger)) {
-                    const panelName = trigger.getAttribute("data-popup-trigger");
-                    const panel = widget.querySelector(
-                        `[data-popup-panel="${panelName}"]`
-                    );
-                    if (!panel) return;
+                const target = event.target;
+                if (!(target instanceof Element)) return;
 
-                    const wasOpen = !panel.hidden;
-                    closeAll(widget);
-                    if (!wasOpen) {
-                        panel.hidden = false;
-                        trigger.setAttribute("aria-expanded", "true");
-                    }
+                const trigger = target.closest("[data-modal-trigger]");
+                if (trigger && widget.contains(trigger)) {
+                    const modalId = trigger.getAttribute("data-modal-trigger");
+                    const modal = widget.querySelector(`#${modalId}`);
+                    if (modal && !modal.open) modal.showModal();
                     return;
                 }
 
-                const openPanel = widget.querySelector(
-                    '[data-popup-panel]:not([hidden])'
-                );
-                if (openPanel && !openPanel.contains(event.target)) {
-                    closeAll(widget);
+                const closeButton = target.closest(".modal-close");
+                if (closeButton && widget.contains(closeButton)) {
+                    const modal = closeButton.closest("dialog");
+                    if (modal && modal.open) modal.close();
                 }
-                if (!widget.contains(event.target)) {
-                    closeAll(widget);
+
+                // Clicking the backdrop dispatches the click event on the dialog itself.
+                if (target instanceof HTMLDialogElement && target.open &&
+                    target.classList.contains("app-modal")) {
+                    target.close();
                 }
             });
 
-            document.addEventListener("keydown", (event) => {
-                if (event.key !== "Escape") return;
-                const widget = document.getElementById(widgetId);
-                if (widget) closeAll(widget);
-            });
-
-            window.__inlineInformationHandlersInstalled = true;
+            window.__inlineModalHandlersInstalled = true;
         })();
     </script>
     """,
