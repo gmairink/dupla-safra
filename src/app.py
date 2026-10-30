@@ -1163,18 +1163,25 @@ st.html(
             </div>
             <div class="modal-body">
                 <p>
-                    O usuário assume todos os riscos relacionados ao uso das
-                    informações disponibilizadas nas páginas web desta plataforma.
-                    A Universidade Federal de Viçosa (UFV) fornece essas informações
-                    na forma em que são apresentadas e isenta-se de todas as garantias,
-                    expressas ou implícitas, incluindo, entre outras, as garantias
-                    implícitas de adequação a uma finalidade específica.
+                    Este trabalho foi desenvolvido no âmbito da Universidade Federal de
+                    Viçosa (UFV), como parte do Trabalho de Conclusão de Curso do autor,
+                    com atividades realizadas em um laboratório da instituição.
                 </p>
+
                 <p>
-                    Em nenhuma circunstância a UFV será responsável perante os usuários
-                    ou terceiros por quaisquer danos diretos, indiretos, incidentais,
-                    consequenciais ou especiais, nem por lucros cessantes decorrentes
-                    do uso ou do uso indevido desses dados.
+                    As informações disponibilizadas nesta plataforma são apresentadas
+                    na forma em que foram produzidas, sem garantias expressas ou
+                    implícitas, incluindo, entre outras, garantias de adequação a uma
+                    finalidade específica.
+                </p>
+
+                <p>
+                    O usuário assume todos os riscos relacionados ao uso dessas
+                    informações. Em nenhuma circunstância a UFV será responsável
+                    perante os usuários ou terceiros por quaisquer danos diretos,
+                    indiretos, incidentais, consequenciais ou especiais, nem por
+                    lucros cessantes decorrentes do uso ou do uso indevido desses dados.
+                </p>
                 </p>
             </div>
         </dialog>
