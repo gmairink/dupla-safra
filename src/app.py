@@ -1117,12 +1117,13 @@ st.html(
     """
     <div id="inline-information-widget">
         <p class="project-description">
-            Este modelo tem como objetivo prever o fim da estação chuvosa na região
-            central do Brasil com 1 a 3 meses de antecedência. As previsões são
-            disponibilizadas no início de março. No início de julho, quando os dados
-            de precipitação estão disponíveis, a aplicação apresenta a data observada
-            do fim da estação chuvosa e o respectivo erro da previsão. Maiores
-            informações sobre o modelo desenvolvido podem ser consultadas em
+            O modelo tem como objetivo prever o fim da estação chuvosa na região central 
+            do Brasil com 1 a 3 meses de antecedência. As previsões são disponibilizadas 
+            no início de março. No início de julho, quando os dados observados estão 
+            integralmente disponíveis, a aplicação passa a apresentar também o mapa 
+            com as datas observadas de término da estação chuvosa e os respectivos 
+            erros de previsão. Maiores detalhes sobre o modelo desenvolvido 
+            podem ser consultadas em
             <button
                 type="button"
                 class="inline-icon info-icon"
