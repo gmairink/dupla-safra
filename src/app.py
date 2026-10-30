@@ -1111,38 +1111,52 @@ def build_map(
 
 st.title("Previsão do fim da estação chuvosa no Brasil Central")
 
-# Description with an inline information icon and a dismissible disclaimer.
-# The click-outside behavior is handled by a delegated browser event listener.
+# Description with two inline information controls:
+# - the information icon opens the project documentation;
+# - the warning icon opens the disclaimer.
+# Both panels close when the user clicks outside or presses Escape.
 st.html(
     """
-    <div id="disclaimer-inline-widget" class="description-with-disclaimer">
-        <p>
+    <div id="inline-information-widget">
+        <p class="project-description">
             Este modelo tem como objetivo prever o fim da estação chuvosa na região
             central do Brasil com 1 a 3 meses de antecedência. As previsões são
-            disponibilizadas no início de março. No início de julho, quando os 
-            dados de precipitação estão disponíveis, a aplicação apresenta a 
-            data observada do fim da estação chuvosa e o respectivo erro da previsão.
-            O uso dessas informações implica no aceite da exoneração 
-            de responsabilidade especificada em <button
-                id="disclaimer-inline-trigger"
+            disponibilizadas no início de março. No início de julho, quando os dados
+            de precipitação estão disponíveis, a aplicação apresenta a data observada
+            do fim da estação chuvosa e o respectivo erro da previsão.
+            Maiores informações sobre o modelo desenvolvido podem ser consultadas em
+            <button
                 type="button"
+                class="inline-icon info-icon"
+                data-popup-trigger="model-info"
+                aria-label="Mais informações sobre o modelo"
+                aria-expanded="false"
+                title="Mais informações sobre o modelo"
+            >i</button>.
+            O uso dessas informações implica a aceitação da declaração de isenção
+            de responsabilidade especificada em
+            <button
+                type="button"
+                class="inline-icon warning-icon"
+                data-popup-trigger="disclaimer"
                 aria-label="Consultar a declaração de isenção de responsabilidade"
                 aria-expanded="false"
-                aria-controls="disclaimer-inline-panel"
                 title="Consultar a declaração de isenção de responsabilidade"
-            >i</button>
+            >!</button>.
         </p>
 
-        <div
-            id="disclaimer-inline-panel"
-            class="disclaimer-popup"
-            role="dialog"
-            aria-labelledby="disclaimer-inline-title"
-            hidden
-        >
-            <strong id="disclaimer-inline-title">
-                Declaração de isenção de responsabilidade
-            </strong>
+        <div id="model-info-panel" class="inline-popup" data-popup-panel="model-info" hidden>
+            <strong>Informações sobre o modelo</strong>
+            <p>
+                A documentação e os arquivos relacionados ao desenvolvimento
+                desta aplicação estão disponíveis no repositório do projeto:
+                <a href="https://github.com/gmairink/dupla-safra" target="_blank"
+                   rel="noopener noreferrer">gmairink/dupla-safra</a>.
+            </p>
+        </div>
+
+        <div id="disclaimer-panel" class="inline-popup" data-popup-panel="disclaimer" hidden>
+            <strong>Declaração de isenção de responsabilidade</strong>
             <p>
                 O usuário assume todos os riscos relacionados ao uso das
                 informações disponibilizadas nas páginas web desta plataforma.
@@ -1161,28 +1175,27 @@ st.html(
     </div>
 
     <style>
-        #disclaimer-inline-widget {
+        #inline-information-widget {
             position: relative;
             width: 100%;
             line-height: 1.6;
             color: var(--text-color, inherit);
         }
 
-        #disclaimer-inline-widget > p {
+        #inline-information-widget .project-description {
             margin: 0;
         }
 
-        #disclaimer-inline-trigger {
+        #inline-information-widget .inline-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             width: 17px;
             height: 17px;
-            margin-left: 5px;
+            margin: 0 2px;
             padding: 0;
             border: 0;
             border-radius: 50%;
-            background: #2878C8;
             color: #ffffff;
             font-family: Arial, sans-serif;
             font-size: 12px;
@@ -1192,20 +1205,32 @@ st.html(
             cursor: pointer;
         }
 
-        #disclaimer-inline-trigger:hover {
+        #inline-information-widget .info-icon {
+            background: #2878C8;
+        }
+
+        #inline-information-widget .info-icon:hover {
             background: #174b82;
         }
 
-        #disclaimer-inline-trigger:focus-visible {
-            outline: 2px solid #2878C8;
+        #inline-information-widget .warning-icon {
+            background: #D97706;
+        }
+
+        #inline-information-widget .warning-icon:hover {
+            background: #A65305;
+        }
+
+        #inline-information-widget .inline-icon:focus-visible {
+            outline: 2px solid currentColor;
             outline-offset: 3px;
         }
 
-        #disclaimer-inline-panel[hidden] {
+        #inline-information-widget .inline-popup[hidden] {
             display: none !important;
         }
 
-        #disclaimer-inline-panel {
+        #inline-information-widget .inline-popup {
             position: absolute;
             z-index: 99999;
             top: calc(100% + 8px);
@@ -1224,52 +1249,69 @@ st.html(
             line-height: 1.6;
         }
 
-        #disclaimer-inline-panel p {
+        #inline-information-widget .inline-popup p {
             margin: 0.65rem 0 0;
+        }
+
+        #inline-information-widget .inline-popup a {
+            color: #2878C8;
+            text-decoration: underline;
         }
     </style>
 
     <script>
         (() => {
-            // Install the document-level handlers only once. The handlers look
-            // up the current widget each time, so they also work after reruns.
-            if (window.__disclaimerInlineHandlersInstalled) return;
+            const widgetId = "inline-information-widget";
+            if (window.__inlineInformationHandlersInstalled) return;
+
+            function closeAll(widget) {
+                widget.querySelectorAll("[data-popup-panel]").forEach((panel) => {
+                    panel.hidden = true;
+                });
+                widget.querySelectorAll("[data-popup-trigger]").forEach((trigger) => {
+                    trigger.setAttribute("aria-expanded", "false");
+                });
+            }
 
             document.addEventListener("click", (event) => {
-                const widget = document.getElementById("disclaimer-inline-widget");
+                const widget = document.getElementById(widgetId);
                 if (!widget) return;
 
-                const trigger = document.getElementById("disclaimer-inline-trigger");
-                const panel = document.getElementById("disclaimer-inline-panel");
-                if (!trigger || !panel) return;
+                const trigger = event.target.closest("[data-popup-trigger]");
+                if (trigger && widget.contains(trigger)) {
+                    const panelName = trigger.getAttribute("data-popup-trigger");
+                    const panel = widget.querySelector(
+                        `[data-popup-panel="${panelName}"]`
+                    );
+                    if (!panel) return;
 
-                if (event.target.closest("#disclaimer-inline-trigger")) {
-                    const isOpen = !panel.hasAttribute("hidden");
-                    if (isOpen) {
-                        panel.setAttribute("hidden", "");
-                        trigger.setAttribute("aria-expanded", "false");
-                    } else {
-                        panel.removeAttribute("hidden");
+                    const wasOpen = !panel.hidden;
+                    closeAll(widget);
+                    if (!wasOpen) {
+                        panel.hidden = false;
                         trigger.setAttribute("aria-expanded", "true");
                     }
-                } else if (!widget.contains(event.target)) {
-                    panel.setAttribute("hidden", "");
-                    trigger.setAttribute("aria-expanded", "false");
+                    return;
+                }
+
+                const openPanel = widget.querySelector(
+                    '[data-popup-panel]:not([hidden])'
+                );
+                if (openPanel && !openPanel.contains(event.target)) {
+                    closeAll(widget);
+                }
+                if (!widget.contains(event.target)) {
+                    closeAll(widget);
                 }
             });
 
             document.addEventListener("keydown", (event) => {
                 if (event.key !== "Escape") return;
-
-                const panel = document.getElementById("disclaimer-inline-panel");
-                const trigger = document.getElementById("disclaimer-inline-trigger");
-                if (panel && trigger) {
-                    panel.setAttribute("hidden", "");
-                    trigger.setAttribute("aria-expanded", "false");
-                }
+                const widget = document.getElementById(widgetId);
+                if (widget) closeAll(widget);
             });
 
-            window.__disclaimerInlineHandlersInstalled = true;
+            window.__inlineInformationHandlersInstalled = true;
         })();
     </script>
     """,
@@ -1283,7 +1325,6 @@ selected_municipality_label = st.selectbox(
     index=0,
     key="municipality_selector",
     format_func=lambda value: "Digite ou selecione um município..." if value == "" else value,
-    help="Digite o nome do município e selecione o resultado. O município será destacado nos três mapas.",
 )
 selected_municipality_label = selected_municipality_label or None
 
