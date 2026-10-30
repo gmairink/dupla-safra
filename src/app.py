@@ -1111,31 +1111,108 @@ def build_map(
 
 st.title("Previsão do fim da estação chuvosa no Brasil Central")
 
-description_col, icon_col = st.columns(
-    [0.94, 0.06],
-    vertical_alignment="bottom",
+# Description and disclaimer icon are kept in the same text flow.
+# The native HTML <details> element opens the legal notice without a separate
+# Streamlit column or an additional Python package.
+st.markdown(
+    """
+    <style>
+        .description-with-disclaimer {
+            line-height: 1.6;
+        }
+
+        .inline-disclaimer {
+            display: inline-block;
+            position: relative;
+            margin-left: 0.3rem;
+            vertical-align: middle;
+        }
+
+        .inline-disclaimer > summary {
+            list-style: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #2563a6;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 1;
+            user-select: none;
+        }
+
+        .inline-disclaimer > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .inline-disclaimer > summary:hover {
+            background: #174b82;
+        }
+
+        .inline-disclaimer[open] .disclaimer-popup {
+            position: absolute;
+            z-index: 10000;
+            top: calc(100% + 8px);
+            right: 0;
+            width: min(520px, calc(100vw - 2rem));
+            max-height: 65vh;
+            overflow-y: auto;
+            box-sizing: border-box;
+            padding: 1rem 1.1rem;
+            border: 1px solid rgba(128, 128, 128, 0.35);
+            border-radius: 8px;
+            background: var(--secondary-background-color, #ffffff);
+            color: var(--text-color, #262730);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+            font-size: 0.92rem;
+            line-height: 1.55;
+        }
+
+        .inline-disclaimer[open] .disclaimer-popup p {
+            margin: 0.5rem 0 0 0;
+        }
+    </style>
+
+    <div class="description-with-disclaimer">
+        Este modelo tem como objetivo prever o fim da estação chuvosa na região
+        central do Brasil com 1 a 3 meses de antecedência. As previsões são
+        disponibilizadas no início de março. No início de julho, quando os dados
+        de precipitação estão disponíveis, são apresentadas a data observada do
+        fim da estação chuvosa e o respectivo erro da previsão.
+        O uso dessas informações implica a aceitação da declaração de isenção
+        de responsabilidade.
+        <details class="inline-disclaimer">
+            <summary title="Consultar a declaração de isenção de responsabilidade"
+                     aria-label="Consultar a declaração de isenção de responsabilidade">
+                i
+            </summary>
+            <div class="disclaimer-popup">
+                <strong>Declaração de isenção de responsabilidade</strong>
+                <p>
+                    O usuário assume todos os riscos relacionados ao uso das
+                    informações disponibilizadas nas páginas web desta plataforma.
+                    A Universidade Federal de Viçosa (UFV) fornece essas informações
+                    na forma em que são apresentadas e isenta-se de todas as garantias,
+                    expressas ou implícitas, incluindo, entre outras, as garantias
+                    implícitas de adequação a uma finalidade específica.
+                </p>
+                <p>
+                    Em nenhuma circunstância a UFV será responsável perante os usuários
+                    ou terceiros por quaisquer danos diretos, indiretos, incidentais,
+                    consequenciais ou especiais, nem por lucros cessantes decorrentes
+                    do uso ou do uso indevido desses dados.
+                </p>
+            </div>
+        </details>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
-
-with description_col:
-    st.markdown(
-        """
-        Este modelo tem como objetivo prever o fim da estação chuvosa
-        na região central do Brasil com 2 a 3 meses de antecedência.
-        As previsões são disponibilizadas no início de março. No início
-        de julho, quando os dados observados estão disponíveis, são
-        apresentadas a data observada do fim da estação chuvosa e o
-        respectivo erro da previsão para o ano em questão. O uso dessas 
-        informações implica a aceitação da declaração de isenção de responsabilidade.
-        """
-    )
-
-with icon_col:
-    if st.button(
-        "❕",
-        help="Consultar a declaração de isenção de responsabilidade",
-        key="disclaimer_button",
-    ):
-        show_disclaimer()
 
 selected_municipality_label = st.selectbox(
     "Localizar município",
@@ -1528,8 +1605,8 @@ if st.session_state.selected_lat is not None and st.session_state.selected_lon i
         st.metric("Erro", error_text)
 else:
 
-    st.info("Clique em uma célula da grade em qualquer um dos mapas para ver maiores detalhes.")
-    st.info("Caso a disposição dos mapas se desconfigure, atualize a página.")
+    st.info("Clique em uma célula da grade em qualquer um dos mapas para ver maiores detalhes. " \
+    "Caso a disposição dos mapas se desconfigure, atualize a página.")
 
 # ============================================================
 # FOOTER
