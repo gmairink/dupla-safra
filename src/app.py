@@ -1186,29 +1186,71 @@ st.markdown(
         fim da estação chuvosa e o respectivo erro da previsão.
         O uso dessas informações implica a aceitação da declaração de isenção
         de responsabilidade.
-        <details class="inline-disclaimer">
-            <summary title="Consultar a declaração de isenção de responsabilidade"
-                     aria-label="Consultar a declaração de isenção de responsabilidade">
-                i
-            </summary>
-            <div class="disclaimer-popup">
-                <strong>Declaração de isenção de responsabilidade</strong>
-                <p>
-                    O usuário assume todos os riscos relacionados ao uso das
-                    informações disponibilizadas nas páginas web desta plataforma.
-                    A Universidade Federal de Viçosa (UFV) fornece essas informações
-                    na forma em que são apresentadas e isenta-se de todas as garantias,
-                    expressas ou implícitas, incluindo, entre outras, as garantias
-                    implícitas de adequação a uma finalidade específica.
-                </p>
-                <p>
-                    Em nenhuma circunstância a UFV será responsável perante os usuários
-                    ou terceiros por quaisquer danos diretos, indiretos, incidentais,
-                    consequenciais ou especiais, nem por lucros cessantes decorrentes
-                    do uso ou do uso indevido desses dados.
-                </p>
-            </div>
-        </details>
+
+
+
+                <button
+            type="button"
+            popovertarget="disclaimer-popup"
+            title="Consultar a declaração de isenção de responsabilidade"
+            aria-label="Consultar declaração de isenção de responsabilidade"
+            style="
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 17px;
+                height: 17px;
+                margin-left: 5px;
+                padding: 0;
+                border: none;
+                border-radius: 50%;
+                background: #2878C8;
+                color: white;
+                font-size: 12px;
+                font-weight: bold;
+                cursor: pointer;
+                vertical-align: middle;
+            "
+        >
+            i
+        </button>
+
+        <div
+            id="disclaimer-popup"
+            popover="auto"
+            style="
+                width: min(560px, calc(100vw - 32px));
+                max-height: 70vh;
+                overflow-y: auto;
+                padding: 20px;
+                border: 1px solid #d0d7de;
+                border-radius: 10px;
+                box-shadow: 0 4px 18px rgba(0,0,0,0.18);
+                color: #333;
+                line-height: 1.6;
+            "
+        >
+            <strong>Declaração de isenção de responsabilidade</strong>
+
+            <p>
+                O usuário assume todos os riscos relacionados ao uso das
+                informações disponibilizadas nas páginas web desta plataforma.
+                A Universidade Federal de Viçosa (UFV) fornece essas informações
+                na forma em que são apresentadas e isenta-se de todas as garantias,
+                expressas ou implícitas, incluindo, entre outras, as garantias
+                implícitas de adequação a uma finalidade específica.
+            </p>
+
+            <p>
+                Em nenhuma circunstância a UFV será responsável perante os usuários
+                ou terceiros por quaisquer danos diretos, indiretos, incidentais,
+                consequenciais ou especiais, nem por lucros cessantes decorrentes
+                do uso ou do uso indevido desses dados.
+            </p>
+        </div>
+
+
+        
     </div>
     """,
     unsafe_allow_html=True,
