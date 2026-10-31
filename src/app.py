@@ -1212,8 +1212,7 @@ html_content = """
             title="Mais informações sobre o modelo"
         >i</button>.
 
-        O uso dessas informações implica a aceitação da declaração de isenção
-        de responsabilidade especificada em
+        O uso dessas informações implica no aceite da exoneração de responsabilidade especificada em
 
         <button
             type="button"
@@ -1263,7 +1262,8 @@ html_content = """
                 e estatisticamente significativas identificadas entre a temperatura
                 da superfície do mar (TSM) em três regiões oceânicas, sendo uma no
                 Oceano Atlântico e duas no Oceano Pacífico, e a data de término da
-                estação chuvosa na região central do Brasil.
+                estação chuvosa na região central do Brasil, determinada a partir do
+                método Anomalous Accumulation.
             </p>
 
 
@@ -1288,8 +1288,15 @@ html_content = """
                 >
 
                 <p class="figure-caption">
-                    Figura 1. Regiões oceânicas selecionadas e área de aplicação
-                    do modelo no Brasil Central (SAM2).
+                    **Figura 1.** Regiões oceânicas identificadas e área de aplicação do modelo 
+                    no Brasil Central (SAM2). A TSM na região RA apresenta correlação negativa 
+                    com a data média de término da estação chuvosa em SAM2. Assim, anomalias 
+                    positivas de TSM nessa região estão associadas à antecipação do término da 
+                    estação chuvosa, enquanto anomalias negativas estão associadas ao seu 
+                    prolongamento. A região RP1 apresenta o mesmo sinal de correlação, 
+                    enquanto RP2-2 apresenta uma relação oposta: anomalias positivas de 
+                    TSM estão associadas ao prolongamento da estação chuvosa, e anomalias 
+                    negativas, à antecipação de seu término. 
                 </p>
 
             </div>
@@ -1300,7 +1307,7 @@ html_content = """
                 oceânicas definidas no Atlântico estão associadas à circulação de
                 Hadley, enquanto as regiões do Pacífico podem estar relacionadas
                 à propagação de ondas de Rossby e à sua influência sobre a região
-                da Monção Sul-Americana (MSA). Essas possíveis conexões atmosféricas
+                da Monção Sul-Americana (MSA). Essas conexões atmosféricas
                 oferecem uma interpretação física para as relações estatísticas
                 identificadas entre a TSM e a variabilidade da data de término da
                 estação chuvosa.
@@ -1310,10 +1317,9 @@ html_content = """
             <p>
                 O modelo foi construído utilizando as coordenadas geográficas dos pixels
                 pertencentes à região SAM2, representadas pela latitude (&phi;) e longitude
-                (&lambda;), e as médias mensais da temperatura da superfície do mar (TSM)
-                em três regiões oceânicas selecionadas: RA, em fevereiro
-                (RA<sub>Fev</sub>); RP1, em janeiro (RP1<sub>Jan</sub>); e RP2-2,
-                em fevereiro (RP2-2<sub>Fev</sub>). Essas variáveis foram utilizadas
+                (&lambda;), e as médias mensais da temperatura da superfície do mar
+                em três regiões oceânicas selecionadas: RA, em fevereiro; 
+                RP1, em janeiro; e RP2-2, em fevereiro. Essas variáveis foram utilizadas
                 como preditores em uma regressão linear multivariada, apresentada
                 na Equação 1.
             </p>
