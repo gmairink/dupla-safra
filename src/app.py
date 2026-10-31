@@ -1197,7 +1197,7 @@ html_content = """
     <p class="project-description">
 
         O modelo tem como objetivo prever o fim da estação chuvosa na região central
-        do Brasil com 1 a 3 meses de antecedência. As previsões são disponibilizadas
+        do Brasil com 2 a 3 meses de antecedência. As previsões são disponibilizadas
         no início de março. No início de julho, quando os dados observados estão
         integralmente disponíveis, a aplicação passa a apresentar também o mapa
         com as datas observadas de término da estação chuvosa e os respectivos
@@ -1288,7 +1288,7 @@ html_content = """
                 >
 
                 <p class="figure-caption">
-                    **Figura 1.** Regiões oceânicas identificadas e área de aplicação do modelo 
+                    Figura 1. Regiões oceânicas identificadas e área de aplicação do modelo 
                     no Brasil Central (SAM2). A TSM na região RA apresenta correlação negativa 
                     com a data média de término da estação chuvosa em SAM2. Assim, anomalias 
                     positivas de TSM nessa região estão associadas à antecipação do término da 
@@ -1335,7 +1335,7 @@ html_content = """
                 >
 
                 <p class="figure-caption">
-                    Equação 1. Modelo de regressão linear multivariada utilizado
+                    Equação 1. Modelo de regressão utilizado
                     para estimar a data de término da estação chuvosa.
                 </p>
 
@@ -1364,9 +1364,12 @@ html_content = """
 
 
             <p>
-                De maneira geral, o modelo apresenta melhor desempenho na porção
-                central da região delimitada, com uma redução gradual de seu
-                desempenho à medida que se aproxima das bordas da área de aplicação.
+                De maneira geral, o modelo apresenta capacidade preditiva consistente em 
+                toda a área de estudo, com erro absoluto médio de 12,5 dias e a maior 
+                parte dos erros absolutos de previsão inferior a 16 dias. Espacialmente, 
+                o modelo apresenta melhor desempenho na porção central da região delimitada, 
+                com uma redução gradual de seu desempenho à medida que se aproxima das bordas 
+                da área de aplicação.
             </p>
 
         </div>
