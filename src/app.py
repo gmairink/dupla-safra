@@ -1250,7 +1250,7 @@ html_content = """
                 A ferramenta foi desenvolvida para apoiar a tomada de decisão
                 de produtores agrícolas diante dos riscos climáticos. Sua aplicação
                 é particularmente relevante em áreas de elevada intensidade agrícola
-                da região da Monção Sul-Americana (MSA), onde a previsão antecipada
+                da região da Monção Sul-Americana (SAM), onde a previsão antecipada
                 do término da estação chuvosa pode subsidiar o planejamento do
                 calendário agrícola e a avaliação da viabilidade do cultivo de
                 uma segunda safra.
@@ -1262,8 +1262,8 @@ html_content = """
                 e estatisticamente significativas identificadas entre a temperatura
                 da superfície do mar (TSM) em três regiões oceânicas, sendo uma no
                 Oceano Atlântico e duas no Oceano Pacífico, e a data de término da
-                estação chuvosa na região central do Brasil, determinada a partir do
-                método Anomalous Accumulation.
+                estação chuvosa na região central do Brasil, estimada pelo método 
+                <em>Anomalous Accumulation</em>.
             </p>
 
 
@@ -1307,7 +1307,7 @@ html_content = """
                 oceânicas definidas no Atlântico estão associadas à circulação de
                 Hadley, enquanto as regiões do Pacífico podem estar relacionadas
                 à propagação de ondas de Rossby e à sua influência sobre a região
-                da Monção Sul-Americana (MSA). Essas conexões atmosféricas
+                da Monção Sul-Americana. Essas conexões atmosféricas
                 oferecem uma interpretação física para as relações estatísticas
                 identificadas entre a TSM e a variabilidade da data de término da
                 estação chuvosa.
