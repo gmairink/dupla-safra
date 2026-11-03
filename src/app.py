@@ -1350,7 +1350,10 @@ html_content = """
                 2011, 2014, 2017, 2019, 2023 e 2024. O conjunto de avaliação
                 compreende os anos 1983, 1986, 1987, 1988, 1991, 1993, 1995,
                 1997, 1998, 2000, 2007, 2008, 2009, 2010, 2012, 2013, 2015,
-                2016, 2018, 2020, 2021 e 2022.
+                2016, 2018, 2020, 2021 e 2022. Logo, os anos posteriores a 2024, 
+                último ano abrangido pela série temporal do estudo (1982–2024), 
+                não foram incluídos em nenhum dos conjuntos e, portanto, 
+                constituem períodos independentes para a avaliação do modelo.
             </p>
 
 
